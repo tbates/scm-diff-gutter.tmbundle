@@ -38,7 +38,12 @@ end
 
 added, changed = [ ], [ ]
 
-Dir.chdir(ENV['TM_PROJECT_DIRECTORY'] || ENV['TM_DIRECTORY'])
+dir = ENV['TM_DIRECTORY']
+unless File.directory?(dir.to_s)
+  dir = ENV['TM_PROJECT_DIRECTORY']
+end
+exit unless File.directory?(dir.to_s)
+Dir.chdir(dir)
 open(diff_cmd, 'r:ascii-8bit') do |io|
   in_block = false
   while line = io.gets
